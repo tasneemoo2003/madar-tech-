@@ -82,19 +82,40 @@ body {
 
 /* Buttons Styling */
 .btn-lime {
+    position: relative;
+    overflow: hidden;
     background-color: var(--color-fresh-lime);
     color: var(--color-oxford-blue);
     font-weight: 700;
     border-radius: 8px;
     padding: 0.6rem 1.6rem;
     border: 2px solid var(--color-fresh-lime);
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.btn-lime::after {
+    position: absolute;
+    top: -50%;
+    left: -75%;
+    width: 45%;
+    height: 200%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+    content: "";
+    pointer-events: none;
+    transform: rotate(20deg);
+    transition: left 0.65s ease;
 }
 
 .btn-lime:hover {
     background-color: transparent;
     color: var(--color-fresh-lime);
-    box-shadow: 0 4px 12px rgba(213, 225, 89, 0.3);
+    box-shadow: 0 6px 18px rgba(213, 225, 89, 0.28);
+    transform: translateY(-2px);
+}
+
+.btn-lime:hover::after,
+.btn-lime:focus-visible::after {
+    left: 140%;
 }
 
 .btn-outline-oxford {
@@ -200,7 +221,7 @@ body {
     border-radius: 12px;
     padding: 30px 25px;
     border: 1px solid var(--color-pale-silver);
-    transition: all 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.2, 0.75, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -208,8 +229,8 @@ body {
 }
 
 .custom-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 25px rgba(3, 33, 61, 0.12);
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 16px 32px rgba(3, 33, 61, 0.16);
     border-color: var(--color-fresh-lime);
 }
 
@@ -224,6 +245,22 @@ body {
     justify-content: center;
     font-size: 1.5rem;
     margin-bottom: 20px;
+    box-shadow: 0 6px 14px rgba(3, 33, 61, 0.16);
+    transition: transform 0.35s cubic-bezier(0.2, 0.75, 0.3, 1), box-shadow 0.35s ease, background-color 0.35s ease;
+}
+
+.custom-card:hover .card-icon {
+    background-color: #0a3559;
+    box-shadow: 0 10px 20px rgba(3, 33, 61, 0.24);
+    transform: translateY(-4px) rotate(-4deg) scale(1.06);
+}
+
+.card-icon i {
+    transition: transform 0.35s ease;
+}
+
+.custom-card:hover .card-icon i {
+    transform: scale(1.08);
 }
 
 .card-title {
@@ -357,4 +394,43 @@ body {
 .social-icons a:hover {
     background: var(--color-fresh-lime);
     color: var(--color-oxford-blue);
+}
+
+.fade-up-pending {
+    opacity: 0;
+    translate: 0 20px;
+    transition: opacity 650ms ease, translate 650ms ease;
+    transition-delay: var(--fade-up-delay, 0ms);
+}
+
+.fade-up-pending.is-visible {
+    opacity: 1;
+    translate: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fade-up-pending {
+        opacity: 1;
+        translate: none;
+        transition: none;
+    }
+
+    .custom-card,
+    .card-icon,
+    .card-icon i,
+    .btn-lime,
+    .btn-lime::after {
+        transition: none;
+    }
+
+    .custom-card:hover,
+    .custom-card:hover .card-icon,
+    .custom-card:hover .card-icon i,
+    .btn-lime:hover {
+        transform: none;
+    }
+
+    .btn-lime::after {
+        display: none;
+    }
 }
