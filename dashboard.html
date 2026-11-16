@@ -148,7 +148,7 @@
 			transition: translate .28s ease, box-shadow .28s ease;
 			animation: metric-enter .55s cubic-bezier(.2,.7,.25,1) both;
 		}
-		.metric:hover { translate: 0 -5px; box-shadow: 0 10px 24px rgba(3,33,61,.1); }
+		.metric:hover, .service-row:hover { translate: 0 -5px; box-shadow: 0 10px 24px rgba(3,33,61,.1); }
 		.metric:nth-child(2) { animation-delay: .1s; }
 		.metric:nth-child(3) { animation-delay: .2s; }
 		.metric:nth-child(4) { animation-delay: .3s; }
@@ -203,7 +203,7 @@
 		.action-btn:hover { border-color: var(--lime); background: #f8fae8; }
 		.action-btn.delete { color: #bd4d4d; }
 		.service-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-		.service-row { display: flex; min-height: 90px; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+		.service-row { display: flex; min-height: 90px; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 6px; background: #fff; transition: translate .28s ease, box-shadow .28s ease; }
 		.service-icon { display: grid; width: 40px; height: 40px; flex: 0 0 auto; place-items: center; border-radius: 6px; background: var(--oxford); color: var(--lime); }
 		.service-row strong { display: block; color: var(--oxford); font-size: .89rem; }
 		.service-row small { color: var(--muted); font-size: .76rem; }
@@ -255,7 +255,7 @@
 		}
 		@media (prefers-reduced-motion: reduce) {
 			*, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-			.metric:hover { translate: none; box-shadow: none; }
+			.metric:hover, .service-row:hover { translate: none; box-shadow: none; }
 		}
 	</style>
 </head>
