@@ -145,8 +145,10 @@
 			border: 1px solid var(--line);
 			border-radius: 7px;
 			background: #fff;
+			transition: translate .28s ease, box-shadow .28s ease;
 			animation: metric-enter .55s cubic-bezier(.2,.7,.25,1) both;
 		}
+		.metric:hover { translate: 0 -5px; box-shadow: 0 10px 24px rgba(3,33,61,.1); }
 		.metric:nth-child(2) { animation-delay: .1s; }
 		.metric:nth-child(3) { animation-delay: .2s; }
 		.metric:nth-child(4) { animation-delay: .3s; }
@@ -253,6 +255,7 @@
 		}
 		@media (prefers-reduced-motion: reduce) {
 			*, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+			.metric:hover { translate: none; box-shadow: none; }
 		}
 	</style>
 </head>
@@ -306,10 +309,10 @@
 				</section>
 
 				<section class="metric-grid" aria-label="إحصائيات الموقع">
-					<article class="metric"><div class="metric-top"><span>البرامج التدريبية</span><span class="metric-icon"><i class="fa-solid fa-graduation-cap"></i></span></div><div class="metric-value" id="programCount">12</div><div class="metric-note"><span class="up"><i class="fa-solid fa-arrow-up"></i> 2</span> برامج جديدة هذا الشهر</div></article>
-					<article class="metric"><div class="metric-top"><span>زيارات الموقع</span><span class="metric-icon"><i class="fa-solid fa-chart-line"></i></span></div><div class="metric-value">3,450</div><div class="metric-note"><span class="up"><i class="fa-solid fa-arrow-up"></i> 12%</span> مقارنة بالشهر الماضي</div></article>
-					<article class="metric"><div class="metric-top"><span>الرسائل الجديدة</span><span class="metric-icon"><i class="fa-regular fa-envelope"></i></span></div><div class="metric-value">4</div><div class="metric-note">من أصل 28 رسالة هذا الشهر</div></article>
-					<article class="metric"><div class="metric-top"><span>طلبات التسجيل</span><span class="metric-icon"><i class="fa-solid fa-user-plus"></i></span></div><div class="metric-value">18</div><div class="metric-note"><span class="up">6 طلبات</span> بانتظار المراجعة</div></article>
+					<article class="metric"><div class="metric-top"><span>البرامج التدريبية</span><span class="metric-icon"><i class="fa-solid fa-graduation-cap"></i></span></div><div class="metric-value" id="programCount" data-count-target="12">12</div><div class="metric-note"><span class="up"><i class="fa-solid fa-arrow-up"></i> 2</span> برامج جديدة هذا الشهر</div></article>
+					<article class="metric"><div class="metric-top"><span>زيارات الموقع</span><span class="metric-icon"><i class="fa-solid fa-chart-line"></i></span></div><div class="metric-value" data-count-target="3450">3,450</div><div class="metric-note"><span class="up"><i class="fa-solid fa-arrow-up"></i> 12%</span> مقارنة بالشهر الماضي</div></article>
+					<article class="metric"><div class="metric-top"><span>الرسائل الجديدة</span><span class="metric-icon"><i class="fa-regular fa-envelope"></i></span></div><div class="metric-value" data-count-target="4">4</div><div class="metric-note">من أصل 28 رسالة هذا الشهر</div></article>
+					<article class="metric"><div class="metric-top"><span>طلبات التسجيل</span><span class="metric-icon"><i class="fa-solid fa-user-plus"></i></span></div><div class="metric-value" data-count-target="18">18</div><div class="metric-note"><span class="up">6 طلبات</span> بانتظار المراجعة</div></article>
 				</section>
 
 				<section class="overview-grid" aria-label="ملخص النشاط">
@@ -424,11 +427,11 @@
 		</div>
 		<div class="offcanvas-body p-0" style="background:var(--oxford)">
 			<nav class="side-nav p-3" aria-label="القائمة الرئيسية">
-				<a class="side-link active" href="#overview" data-bs-dismiss="offcanvas"><i class="fa-solid fa-grid-2"></i>نظرة عامة</a>
-				<a class="side-link" href="#programs" data-bs-dismiss="offcanvas"><i class="fa-solid fa-graduation-cap"></i>البرامج التدريبية</a>
-				<a class="side-link" href="#services" data-bs-dismiss="offcanvas"><i class="fa-solid fa-layer-group"></i>الخدمات</a>
-				<a class="side-link" href="#messages" data-bs-dismiss="offcanvas"><i class="fa-regular fa-envelope"></i>الرسائل</a>
-				<a class="side-link" href="#settings" data-bs-dismiss="offcanvas"><i class="fa-solid fa-sliders"></i>إعدادات الموقع</a>
+				<a class="side-link active" href="#overview"><i class="fa-solid fa-grid-2"></i>نظرة عامة</a>
+				<a class="side-link" href="#programs"><i class="fa-solid fa-graduation-cap"></i>البرامج التدريبية</a>
+				<a class="side-link" href="#services"><i class="fa-solid fa-layer-group"></i>الخدمات</a>
+				<a class="side-link" href="#messages"><i class="fa-regular fa-envelope"></i>الرسائل</a>
+				<a class="side-link" href="#settings"><i class="fa-solid fa-sliders"></i>إعدادات الموقع</a>
 				<a class="side-link" href="index.html"><i class="fa-solid fa-arrow-up-right-from-square"></i>العودة للموقع الرئيسي</a>
 			</nav>
 		</div>
@@ -449,6 +452,47 @@
 		const programCount = document.getElementById('programCount');
 		const searchInput = document.getElementById('programSearch');
 		const programStatusLabels = { active: ['status-active', 'متاح للتسجيل'], soon: ['status-soon', 'قريباً'], closed: ['status-closed', 'مغلق'] };
+		const metricNumberFormatter = new Intl.NumberFormat('en-US');
+		const metricAnimationFrames = new WeakMap();
+
+		function animateMetricCount(element, targetValue, fromZero = false) {
+			const previousFrame = metricAnimationFrames.get(element);
+			if (previousFrame) {
+				cancelAnimationFrame(previousFrame);
+				metricAnimationFrames.delete(element);
+			}
+
+			const currentValue = Number(element.textContent.replace(/,/g, '')) || 0;
+			const startValue = fromZero ? 0 : currentValue;
+			if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+				element.textContent = metricNumberFormatter.format(targetValue);
+				return;
+			}
+
+			const startTime = performance.now();
+			const duration = 1800;
+			element.textContent = metricNumberFormatter.format(startValue);
+
+			const update = (currentTime) => {
+				const progress = Math.min((currentTime - startTime) / duration, 1);
+				const easedProgress = 1 - Math.pow(1 - progress, 4);
+				const value = Math.round(startValue + (targetValue - startValue) * easedProgress);
+				element.textContent = metricNumberFormatter.format(value);
+
+				if (progress < 1) {
+					metricAnimationFrames.set(element, requestAnimationFrame(update));
+				} else {
+					element.textContent = metricNumberFormatter.format(targetValue);
+					metricAnimationFrames.delete(element);
+				}
+			};
+
+			metricAnimationFrames.set(element, requestAnimationFrame(update));
+		}
+
+		document.querySelectorAll('.metric-value[data-count-target]').forEach((element) => {
+			animateMetricCount(element, Number(element.dataset.countTarget), true);
+		});
 
 		function showToast(message) {
 			document.getElementById('toastMessage').textContent = message;
@@ -456,7 +500,9 @@
 		}
 
 		function updateProgramCount() {
-			programCount.textContent = String(programTableBody.rows.length + 9);
+			const targetValue = programTableBody.rows.length + 9;
+			programCount.dataset.countTarget = String(targetValue);
+			animateMetricCount(programCount, targetValue);
 		}
 
 		function filterPrograms() {
@@ -578,8 +624,28 @@
 
 		document.querySelectorAll('.side-link[href^="#"]').forEach((link) => {
 			link.addEventListener('click', () => {
-				document.querySelectorAll('.sidebar .side-link').forEach((item) => item.classList.remove('active'));
+				document.querySelectorAll('.side-link').forEach((item) => item.classList.remove('active'));
 				document.querySelectorAll(`.side-link[href="${link.getAttribute('href')}"]`).forEach((item) => item.classList.add('active'));
+			});
+		});
+
+		const mobileSidebar = document.getElementById('mobileSidebar');
+		mobileSidebar.querySelectorAll('.side-link[href^="#"]').forEach((link) => {
+			link.addEventListener('click', (event) => {
+				event.preventDefault();
+				const sectionHash = link.getAttribute('href');
+				const closeMenuAndNavigate = () => {
+					mobileSidebar.addEventListener('hidden.bs.offcanvas', () => {
+						window.location.hash = sectionHash;
+					}, { once: true });
+					bootstrap.Offcanvas.getOrCreateInstance(mobileSidebar).hide();
+				};
+
+				if (mobileSidebar.classList.contains('showing')) {
+					mobileSidebar.addEventListener('shown.bs.offcanvas', closeMenuAndNavigate, { once: true });
+				} else {
+					closeMenuAndNavigate();
+				}
 			});
 		});
 
