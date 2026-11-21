@@ -30,8 +30,10 @@
 		}
 
 		* { box-sizing: border-box; }
+		html { overflow-x: hidden; }
 		body {
-			min-width: 320px;
+			min-width: 0;
+			overflow-x: hidden;
 			margin: 0;
 			background: var(--canvas);
 			color: var(--ink);
@@ -207,6 +209,16 @@
 		.service-icon { display: grid; width: 40px; height: 40px; flex: 0 0 auto; place-items: center; border-radius: 6px; background: var(--oxford); color: var(--lime); }
 		.service-row strong { display: block; color: var(--oxford); font-size: .89rem; }
 		.service-row small { color: var(--muted); font-size: .76rem; }
+		.service-row-content { min-width: 0; flex: 1; }
+		.service-row .row-actions { margin-inline-start: auto; }
+		.content-list { display: grid; gap: 10px; }
+		.content-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+		.content-row-copy { min-width: 0; }
+		.content-row-copy strong { display: block; color: var(--oxford); }
+		.content-row-copy p { margin: 4px 0 0; color: var(--muted); font-size: .8rem; }
+		.content-row .row-actions { flex: 0 0 auto; }
+		.content-row .form-check { flex: 0 0 auto; }
+		.empty-list { padding: 16px; border: 1px dashed var(--line); border-radius: 6px; color: var(--muted); text-align: center; }
 		.message-sender { color: var(--oxford); font-weight: 700; white-space: nowrap; }
 		.message-preview { display: block; max-width: 390px; overflow: hidden; color: var(--muted); text-overflow: ellipsis; white-space: nowrap; }
 		.settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -246,9 +258,11 @@
 			.metric-icon { width: 31px; height: 31px; }
 			.metric-value { font-size: 1.45rem; }
 			.section-heading { align-items: start; }
+			#services .section-heading { flex-direction: column; }
 			.section-heading .btn { flex: 0 0 auto; }
 			.panel-body { padding: 14px; }
 			.service-grid, .settings-grid { grid-template-columns: 1fr; }
+			.content-row { align-items: start; flex-wrap: wrap; }
 			.chart-wrap { gap: 8px; }
 			.chart-column { font-size: .66rem; }
 			.profile-avatar { width: 36px; height: 36px; }
@@ -269,8 +283,10 @@
 			<span class="side-label">القائمة الرئيسية</span>
 			<nav class="side-nav">
 				<a class="side-link active" href="#overview"><i class="fa-solid fa-grid-2" aria-hidden="true"></i>نظرة عامة</a>
+				<a class="side-link" href="#homeContent"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>محتوى الواجهة</a>
 				<a class="side-link" href="#programs"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>البرامج التدريبية</a>
 				<a class="side-link" href="#services"><i class="fa-solid fa-layer-group" aria-hidden="true"></i>الخدمات</a>
+				<a class="side-link" href="#customSections"><i class="fa-solid fa-square-plus" aria-hidden="true"></i>أقسام مخصصة</a>
 				<a class="side-link" href="#messages"><i class="fa-regular fa-envelope" aria-hidden="true"></i>الرسائل <span class="badge rounded-pill text-bg-warning me-auto">4</span></a>
 			</nav>
 			<span class="side-label">إدارة الموقع</span>
@@ -315,6 +331,23 @@
 					<article class="metric"><div class="metric-top"><span>طلبات التسجيل</span><span class="metric-icon"><i class="fa-solid fa-user-plus"></i></span></div><div class="metric-value" data-count-target="18">18</div><div class="metric-note"><span class="up">6 طلبات</span> بانتظار المراجعة</div></article>
 				</section>
 
+				<section id="homeContent" class="section-block">
+					<div class="section-heading"><div><h2>محتوى الصفحة الرئيسية</h2><p>تعديل نص الواجهة والنبذة والأزرار الرئيسية.</p></div><a class="btn btn-outline-secondary btn-sm" href="index.html">معاينة الصفحة</a></div>
+					<form id="homeContentForm" class="panel panel-body">
+						<div class="row g-3">
+							<div class="col-md-8"><label class="form-label" for="heroTitle">عنوان الواجهة الرئيسية</label><input class="form-control" id="heroTitle" required></div>
+							<div class="col-md-4"><label class="form-label" for="heroHighlight">العبارة المميزة باللون الأخضر</label><input class="form-control" id="heroHighlight" required></div>
+							<div class="col-12"><label class="form-label" for="heroDescription">نبذة الواجهة الرئيسية</label><textarea class="form-control" id="heroDescription" rows="3" required></textarea></div>
+							<div class="col-12"><label class="form-label" for="aboutDescription">النبذة التعريفية</label><textarea class="form-control" id="aboutDescription" rows="3" required></textarea></div>
+							<div class="col-md-6"><label class="form-label" for="primaryButtonText">نص الزر الأول</label><input class="form-control" id="primaryButtonText" required></div>
+							<div class="col-md-6"><label class="form-label" for="primaryButtonHref">رابط الزر الأول</label><input class="form-control" id="primaryButtonHref" required placeholder="#services"></div>
+							<div class="col-md-6"><label class="form-label" for="secondaryButtonText">نص الزر الثاني</label><input class="form-control" id="secondaryButtonText" required></div>
+							<div class="col-md-6"><label class="form-label" for="secondaryButtonHref">رابط الزر الثاني</label><input class="form-control" id="secondaryButtonHref" required placeholder="#contact"></div>
+							<div class="col-12"><button class="btn btn-oxford" type="submit"><i class="fa-solid fa-floppy-disk ms-2"></i>حفظ محتوى الواجهة</button></div>
+						</div>
+					</form>
+				</section>
+
 				<section class="overview-grid" aria-label="ملخص النشاط">
 					<article class="panel">
 						<div class="panel-header"><div><h3>زيارات الموقع</h3><small class="text-secondary">نظرة على آخر 7 أيام</small></div><span class="badge rounded-pill text-bg-light">هذا الأسبوع</span></div>
@@ -351,6 +384,7 @@
 								<input id="editingRow" type="hidden">
 								<div class="row g-3">
 									<div class="col-md-6"><label class="form-label" for="programName">اسم البرنامج</label><input class="form-control" id="programName" required placeholder="مثال: تطوير واجهات المواقع"></div>
+									<div class="col-md-6"><label class="form-label" for="programCategory">تصنيف البرنامج</label><input class="form-control" id="programCategory" required placeholder="مثال: برنامج تقني"></div>
 									<div class="col-md-6"><label class="form-label" for="programAudience">الفئة المستهدفة</label><input class="form-control" id="programAudience" required placeholder="مثال: الطلاب والخريجون"></div>
 									<div class="col-md-6"><label class="form-label" for="programDate">تاريخ البدء</label><input class="form-control" id="programDate" type="date" required></div>
 									<div class="col-md-6"><label class="form-label" for="programStatus">الحالة</label><select class="form-select" id="programStatus"><option value="active">متاح للتسجيل</option><option value="soon">قريباً</option><option value="closed">مغلق</option></select></div>
@@ -364,11 +398,7 @@
 						<div class="table-responsive">
 							<table class="table table-hover" id="programTable">
 								<thead><tr><th scope="col">البرنامج</th><th scope="col">الفئة المستهدفة</th><th scope="col">تاريخ البدء</th><th scope="col">الحالة</th><th scope="col">الإجراءات</th></tr></thead>
-								<tbody>
-									<tr><td><span class="program-name">تطوير واجهات المواقع</span><span class="program-sub">تدريب تقني · 8 أسابيع</span></td><td>الطلاب والخريجون</td><td>2026-12-01</td><td><span class="status status-active" data-status="active">متاح للتسجيل</span></td><td><div class="row-actions"><button class="action-btn edit-program" type="button" aria-label="تعديل تطوير واجهات المواقع"><i class="fa-solid fa-pen"></i></button><button class="action-btn delete delete-program" type="button" aria-label="حذف تطوير واجهات المواقع"><i class="fa-regular fa-trash-can"></i></button></div></td></tr>
-									<tr><td><span class="program-name">الذكاء الاصطناعي التطبيقي</span><span class="program-sub">تقنيات المستقبل · 6 أسابيع</span></td><td>المهتمون بالتقنية</td><td>2027-01-10</td><td><span class="status status-soon" data-status="soon">قريباً</span></td><td><div class="row-actions"><button class="action-btn edit-program" type="button" aria-label="تعديل الذكاء الاصطناعي التطبيقي"><i class="fa-solid fa-pen"></i></button><button class="action-btn delete delete-program" type="button" aria-label="حذف الذكاء الاصطناعي التطبيقي"><i class="fa-regular fa-trash-can"></i></button></div></td></tr>
-									<tr><td><span class="program-name">المهارات الرقمية</span><span class="program-sub">مهارات مهنية · 4 أسابيع</span></td><td>الشباب والباحثون عن عمل</td><td>2027-02-15</td><td><span class="status status-closed" data-status="closed">مغلق</span></td><td><div class="row-actions"><button class="action-btn edit-program" type="button" aria-label="تعديل المهارات الرقمية"><i class="fa-solid fa-pen"></i></button><button class="action-btn delete delete-program" type="button" aria-label="حذف المهارات الرقمية"><i class="fa-regular fa-trash-can"></i></button></div></td></tr>
-								</tbody>
+								<tbody></tbody>
 							</table>
 						</div>
 						<div id="emptySearch" class="p-4 text-center text-secondary" hidden>لا توجد برامج مطابقة لبحثك.</div>
@@ -376,12 +406,43 @@
 				</section>
 
 				<section id="services" class="section-block">
-					<div class="section-heading"><div><h2>خدمات الموقع</h2><p>الخدمات المنشورة حالياً في مدار تك.</p></div><a class="btn btn-outline-secondary btn-sm" href="index.html#services">معاينة الخدمات</a></div>
-					<div class="service-grid">
-						<article class="service-row"><span class="service-icon"><i class="fa-solid fa-laptop-code"></i></span><div><strong>التدريب والتطوير</strong><small>برامج تقنية ومهنية</small></div></article>
-						<article class="service-row"><span class="service-icon"><i class="fa-solid fa-mug-hot"></i></span><div><strong>مساحات العمل المشتركة</strong><small>مساحة للدراسة والعمل</small></div></article>
-						<article class="service-row"><span class="service-icon"><i class="fa-solid fa-chalkboard-user"></i></span><div><strong>القاعات التدريبية</strong><small>قاعات للفعاليات والدورات</small></div></article>
+					<div class="section-heading"><div><h2>خدمات الموقع</h2><p>الخدمات المنشورة حالياً في مدار تك.</p></div><div class="d-flex gap-2"><button class="btn btn-oxford btn-sm" type="button" id="newServiceButton"><i class="fa-solid fa-plus ms-1" aria-hidden="true"></i>خدمة جديدة</button><a class="btn btn-outline-secondary btn-sm" href="index.html#services">معاينة الخدمات</a></div></div>
+					<div class="collapse mb-3" id="serviceFormPanel">
+						<div class="panel">
+							<div class="panel-header"><h3 id="serviceFormTitle">إضافة خدمة</h3><button class="action-btn" type="button" id="closeServiceForm" aria-label="إغلاق النموذج"><i class="fa-solid fa-xmark"></i></button></div>
+							<form id="serviceForm" class="panel-body">
+								<input id="editingServiceId" type="hidden">
+								<div class="row g-3">
+									<div class="col-md-6"><label class="form-label" for="serviceTitle">اسم الخدمة</label><input class="form-control" id="serviceTitle" required></div>
+									<div class="col-md-6"><label class="form-label" for="serviceIcon">أيقونة الخدمة</label><select class="form-select" id="serviceIcon"><option value="fa-graduation-cap">التدريب والتعليم</option><option value="fa-mug-hot">مساحات العمل</option><option value="fa-chalkboard-user">القاعات</option><option value="fa-users">الأنشطة والمجتمع</option><option value="fa-laptop-code">التقنية</option><option value="fa-lightbulb">الأفكار والابتكار</option></select></div>
+									<div class="col-12"><label class="form-label" for="serviceDescription">وصف الخدمة</label><textarea class="form-control" id="serviceDescription" rows="3" required></textarea></div>
+									<div class="col-12 d-flex gap-2"><button class="btn btn-oxford" type="submit"><i class="fa-solid fa-floppy-disk ms-2"></i>حفظ الخدمة</button><button class="btn btn-light" type="reset">إلغاء</button></div>
+								</div>
+							</form>
+						</div>
 					</div>
+					<div class="service-grid" id="serviceList"></div>
+				</section>
+
+				<section id="customSections" class="section-block">
+					<div class="section-heading"><div><h2>أقسام مخصصة</h2><p>إضافة أقسام مرنة للصفحة الرئيسية مع إمكانية إخفائها.</p></div><button class="btn btn-oxford btn-sm" type="button" id="newSectionButton"><i class="fa-solid fa-plus ms-1" aria-hidden="true"></i>قسم جديد</button></div>
+					<div class="collapse mb-3" id="customSectionFormPanel">
+						<div class="panel">
+							<div class="panel-header"><h3 id="customSectionFormTitle">إضافة قسم</h3><button class="action-btn" type="button" id="closeCustomSectionForm" aria-label="إغلاق النموذج"><i class="fa-solid fa-xmark"></i></button></div>
+							<form id="customSectionForm" class="panel-body">
+								<input id="editingCustomSectionId" type="hidden">
+								<div class="row g-3">
+									<div class="col-12"><label class="form-label" for="customSectionTitle">عنوان القسم</label><input class="form-control" id="customSectionTitle" required></div>
+									<div class="col-12"><label class="form-label" for="customSectionDescription">وصف القسم</label><textarea class="form-control" id="customSectionDescription" rows="3" required></textarea></div>
+									<div class="col-md-6"><label class="form-label" for="customSectionButtonText">نص الزر (اختياري)</label><input class="form-control" id="customSectionButtonText"></div>
+									<div class="col-md-6"><label class="form-label" for="customSectionButtonHref">رابط الزر (اختياري)</label><input class="form-control" id="customSectionButtonHref" placeholder="#contact"></div>
+									<div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" id="customSectionVisible" checked><label class="form-check-label" for="customSectionVisible">إظهار القسم على الصفحة الرئيسية</label></div></div>
+									<div class="col-12 d-flex gap-2"><button class="btn btn-oxford" type="submit"><i class="fa-solid fa-floppy-disk ms-2"></i>حفظ القسم</button><button class="btn btn-light" type="reset">إلغاء</button></div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="content-list" id="customSectionList"></div>
 				</section>
 
 				<section id="messages" class="section-block">
@@ -405,13 +466,13 @@
 					<form id="settingsForm" class="settings-grid">
 						<div class="panel"><div class="panel-header"><h3>معلومات التواصل</h3></div><div class="panel-body">
 							<div class="mb-3"><label class="form-label" for="siteEmail">البريد الإلكتروني</label><input class="form-control" id="siteEmail" type="email" value="info@madartech.ps"></div>
-							<div class="mb-3"><label class="form-label" for="sitePhone">رقم الهاتف</label><input class="form-control" id="sitePhone" type="tel" placeholder="أدخل رقم التواصل"></div>
+							<div class="mb-3"><label class="form-label" for="sitePhone">رقم الهاتف</label><input class="form-control" id="sitePhone" type="tel" placeholder="+970599000000"></div>
 							<div><label class="form-label" for="siteAddress">العنوان</label><input class="form-control" id="siteAddress" value="خانيونس - بجانب المحكمة الشرعية"></div>
 						</div></div>
 						<div class="panel"><div class="panel-header"><h3>تفضيلات الموقع</h3></div><div class="panel-body">
 							<div class="settings-toggle"><div><strong>استقبال طلبات التسجيل</strong><small>السماح للزوار بالتقديم على البرامج</small></div><div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" role="switch" id="acceptApplications" checked aria-label="استقبال طلبات التسجيل"></div></div>
 							<div class="settings-toggle"><div><strong>إظهار البرامج القادمة</strong><small>عرض البرامج التي يبدأ التسجيل فيها قريباً</small></div><div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" role="switch" id="showUpcoming" checked aria-label="إظهار البرامج القادمة"></div></div>
-							<button class="btn btn-oxford mt-3" type="submit"><i class="fa-solid fa-floppy-disk ms-2"></i>حفظ الإعدادات</button>
+							<div class="d-flex flex-wrap gap-2 mt-3"><button class="btn btn-oxford" type="submit"><i class="fa-solid fa-floppy-disk ms-2"></i>حفظ الإعدادات</button><button class="btn btn-outline-danger" id="resetSiteContent" type="button"><i class="fa-solid fa-rotate-right ms-2"></i>إعادة ضبط الافتراضي</button></div>
 						</div></div>
 					</form>
 				</section>
@@ -428,8 +489,10 @@
 		<div class="offcanvas-body p-0" style="background:var(--oxford)">
 			<nav class="side-nav p-3" aria-label="القائمة الرئيسية">
 				<a class="side-link active" href="#overview"><i class="fa-solid fa-grid-2"></i>نظرة عامة</a>
+				<a class="side-link" href="#homeContent"><i class="fa-solid fa-pen-to-square"></i>محتوى الواجهة</a>
 				<a class="side-link" href="#programs"><i class="fa-solid fa-graduation-cap"></i>البرامج التدريبية</a>
 				<a class="side-link" href="#services"><i class="fa-solid fa-layer-group"></i>الخدمات</a>
+				<a class="side-link" href="#customSections"><i class="fa-solid fa-square-plus"></i>أقسام مخصصة</a>
 				<a class="side-link" href="#messages"><i class="fa-regular fa-envelope"></i>الرسائل</a>
 				<a class="side-link" href="#settings"><i class="fa-solid fa-sliders"></i>إعدادات الموقع</a>
 				<a class="side-link" href="index.html"><i class="fa-solid fa-arrow-up-right-from-square"></i>العودة للموقع الرئيسي</a>
@@ -445,15 +508,19 @@
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="site-content.js"></script>
 	<script>
 		const programForm = document.getElementById('programForm');
 		const programTableBody = document.querySelector('#programTable tbody');
 		const programFormPanel = document.getElementById('programFormPanel');
 		const programCount = document.getElementById('programCount');
 		const searchInput = document.getElementById('programSearch');
+		const serviceFormPanel = document.getElementById('serviceFormPanel');
+		const customSectionFormPanel = document.getElementById('customSectionFormPanel');
 		const programStatusLabels = { active: ['status-active', 'متاح للتسجيل'], soon: ['status-soon', 'قريباً'], closed: ['status-closed', 'مغلق'] };
 		const metricNumberFormatter = new Intl.NumberFormat('en-US');
 		const metricAnimationFrames = new WeakMap();
+		let siteContent;
 
 		function animateMetricCount(element, targetValue, fromZero = false) {
 			const previousFrame = metricAnimationFrames.get(element);
@@ -472,13 +539,10 @@
 			const startTime = performance.now();
 			const duration = 1800;
 			element.textContent = metricNumberFormatter.format(startValue);
-
 			const update = (currentTime) => {
 				const progress = Math.min((currentTime - startTime) / duration, 1);
 				const easedProgress = 1 - Math.pow(1 - progress, 4);
-				const value = Math.round(startValue + (targetValue - startValue) * easedProgress);
-				element.textContent = metricNumberFormatter.format(value);
-
+				element.textContent = metricNumberFormatter.format(Math.round(startValue + (targetValue - startValue) * easedProgress));
 				if (progress < 1) {
 					metricAnimationFrames.set(element, requestAnimationFrame(update));
 				} else {
@@ -486,21 +550,42 @@
 					metricAnimationFrames.delete(element);
 				}
 			};
-
 			metricAnimationFrames.set(element, requestAnimationFrame(update));
 		}
-
-		document.querySelectorAll('.metric-value[data-count-target]').forEach((element) => {
-			animateMetricCount(element, Number(element.dataset.countTarget), true);
-		});
 
 		function showToast(message) {
 			document.getElementById('toastMessage').textContent = message;
 			bootstrap.Toast.getOrCreateInstance(document.getElementById('dashboardToast')).show();
 		}
 
+		function reportError(error) {
+			console.error('تعذر حفظ محتوى الموقع:', error);
+			showToast(error.message || 'تعذر حفظ التغييرات.');
+		}
+
+		function cloneContent(content) {
+			return JSON.parse(JSON.stringify(content));
+		}
+
+		function createId(prefix) {
+			return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+		}
+
+		function commitContent(nextContent, message) {
+			try {
+				MadarSiteContent.save(nextContent);
+				siteContent = nextContent;
+				renderLists();
+				showToast(message);
+				return true;
+			} catch (error) {
+				reportError(error);
+				return false;
+			}
+		}
+
 		function updateProgramCount() {
-			const targetValue = programTableBody.rows.length + 9;
+			const targetValue = siteContent.programs.length;
 			programCount.dataset.countTarget = String(targetValue);
 			animateMetricCount(programCount, targetValue);
 		}
@@ -508,12 +593,181 @@
 		function filterPrograms() {
 			const query = searchInput.value.trim().toLocaleLowerCase('ar');
 			let visibleCount = 0;
-			[...programTableBody.rows].forEach((row) => {
+			Array.from(programTableBody.rows).forEach((row) => {
 				const matches = row.textContent.toLocaleLowerCase('ar').includes(query);
 				row.hidden = !matches;
 				if (matches) visibleCount += 1;
 			});
 			document.getElementById('emptySearch').hidden = visibleCount > 0;
+		}
+
+		function createActionButton(action, label, iconClass, isDelete = false) {
+			const button = document.createElement('button');
+			const icon = document.createElement('i');
+			button.type = 'button';
+			button.className = `action-btn${isDelete ? ' delete' : ''}`;
+			button.dataset.action = action;
+			button.setAttribute('aria-label', label);
+			icon.className = `fa-solid ${iconClass}`;
+			button.append(icon);
+			return button;
+		}
+
+		function createProgramRow(program) {
+			const row = document.createElement('tr');
+			row.dataset.id = program.id;
+			const programCell = document.createElement('td');
+			const name = document.createElement('span');
+			const details = document.createElement('span');
+			name.className = 'program-name';
+			name.textContent = program.name;
+			details.className = 'program-sub';
+			details.textContent = `${program.category} · ${program.description}`;
+			programCell.append(name, details);
+
+			const audienceCell = document.createElement('td');
+			audienceCell.textContent = program.audience;
+			const dateCell = document.createElement('td');
+			dateCell.textContent = program.date;
+			const [statusClass, statusText] = programStatusLabels[program.status];
+			const statusCell = document.createElement('td');
+			const status = document.createElement('span');
+			status.className = `status ${statusClass}`;
+			status.dataset.status = program.status;
+			status.textContent = statusText;
+			statusCell.append(status);
+
+			const actionsCell = document.createElement('td');
+			const actions = document.createElement('div');
+			actions.className = 'row-actions';
+			actions.append(
+				createActionButton('edit-program', `تعديل ${program.name}`, 'fa-pen'),
+				createActionButton('delete-program', `حذف ${program.name}`, 'fa-trash-can', true)
+			);
+			actionsCell.append(actions);
+			row.append(programCell, audienceCell, dateCell, statusCell, actionsCell);
+			return row;
+		}
+
+		function renderPrograms() {
+			programTableBody.replaceChildren(...siteContent.programs.map(createProgramRow));
+			filterPrograms();
+			updateProgramCount();
+		}
+
+		function renderServices() {
+			const list = document.getElementById('serviceList');
+			list.replaceChildren();
+
+			siteContent.services.forEach((service) => {
+				const article = document.createElement('article');
+				const iconBox = document.createElement('span');
+				const icon = document.createElement('i');
+				const copy = document.createElement('div');
+				const title = document.createElement('strong');
+				const description = document.createElement('small');
+				const actions = document.createElement('div');
+				article.className = 'service-row';
+				article.dataset.id = service.id;
+				iconBox.className = 'service-icon';
+				icon.className = `fa-solid ${service.icon}`;
+				iconBox.append(icon);
+				copy.className = 'service-row-content';
+				title.textContent = service.title;
+				description.textContent = service.description;
+				copy.append(title, description);
+				actions.className = 'row-actions';
+				actions.append(
+					createActionButton('edit-service', `تعديل ${service.title}`, 'fa-pen'),
+					createActionButton('delete-service', `حذف ${service.title}`, 'fa-trash-can', true)
+				);
+				article.append(iconBox, copy, actions);
+				list.append(article);
+			});
+
+			if (!siteContent.services.length) {
+				list.append(createEmptyMessage('لا توجد خدمات حالياً.'));
+			}
+		}
+
+		function renderCustomSections() {
+			const list = document.getElementById('customSectionList');
+			list.replaceChildren();
+
+			siteContent.customSections.forEach((section) => {
+				const row = document.createElement('article');
+				const copy = document.createElement('div');
+				const title = document.createElement('strong');
+				const description = document.createElement('p');
+				const actions = document.createElement('div');
+				const visibility = document.createElement('label');
+				const checkbox = document.createElement('input');
+				const visibilityText = document.createElement('span');
+				row.className = 'content-row';
+				row.dataset.id = section.id;
+				copy.className = 'content-row-copy';
+				title.textContent = section.title;
+				description.textContent = section.description;
+				copy.append(title, description);
+				actions.className = 'row-actions';
+				actions.append(
+					createActionButton('edit-section', `تعديل ${section.title}`, 'fa-pen'),
+					createActionButton('delete-section', `حذف ${section.title}`, 'fa-trash-can', true)
+				);
+				visibility.className = 'form-check form-switch m-0';
+				checkbox.className = 'form-check-input';
+				checkbox.type = 'checkbox';
+				checkbox.checked = section.visible;
+				checkbox.dataset.action = 'toggle-section';
+				checkbox.setAttribute('aria-label', `إظهار ${section.title}`);
+				visibilityText.className = 'form-check-label small';
+				visibilityText.textContent = section.visible ? 'ظاهر' : 'مخفي';
+				visibility.append(checkbox, visibilityText);
+				row.append(copy, visibility, actions);
+				list.append(row);
+			});
+
+			if (!siteContent.customSections.length) {
+				list.append(createEmptyMessage('لم تتم إضافة أقسام مخصصة بعد.'));
+			}
+		}
+
+		function createEmptyMessage(text) {
+			const message = document.createElement('div');
+			message.className = 'empty-list';
+			message.textContent = text;
+			return message;
+		}
+
+		function renderLists() {
+			renderPrograms();
+			renderServices();
+			renderCustomSections();
+		}
+
+		function populateHomeForm() {
+			document.getElementById('heroTitle').value = siteContent.hero.title;
+			document.getElementById('heroHighlight').value = siteContent.hero.highlight;
+			document.getElementById('heroDescription').value = siteContent.hero.description;
+			document.getElementById('aboutDescription').value = siteContent.aboutDescription;
+			document.getElementById('primaryButtonText').value = siteContent.hero.primaryButtonText;
+			document.getElementById('primaryButtonHref').value = siteContent.hero.primaryButtonHref;
+			document.getElementById('secondaryButtonText').value = siteContent.hero.secondaryButtonText;
+			document.getElementById('secondaryButtonHref').value = siteContent.hero.secondaryButtonHref;
+		}
+
+		function populateSettingsForm() {
+			document.getElementById('siteEmail').value = siteContent.settings.email;
+			document.getElementById('sitePhone').value = siteContent.settings.phone;
+			document.getElementById('siteAddress').value = siteContent.settings.address;
+			document.getElementById('acceptApplications').checked = siteContent.settings.acceptApplications;
+			document.getElementById('showUpcoming').checked = siteContent.settings.showUpcoming;
+		}
+
+		function populateDashboard() {
+			populateHomeForm();
+			populateSettingsForm();
+			renderLists();
 		}
 
 		function resetProgramForm() {
@@ -522,104 +776,289 @@
 			document.getElementById('programFormTitle').textContent = 'إضافة برنامج تدريبي';
 		}
 
-		function createProgramRow({ name, description, audience, date, status }) {
-			const row = document.createElement('tr');
-			const programCell = document.createElement('td');
-			const nameLabel = document.createElement('span');
-			const programDetails = document.createElement('span');
-			nameLabel.className = 'program-name';
-			nameLabel.textContent = name;
-			programDetails.className = 'program-sub';
-			programDetails.textContent = description || 'برنامج تدريبي';
-			programCell.append(nameLabel, programDetails);
-
-			const audienceCell = document.createElement('td');
-			audienceCell.textContent = audience;
-			const dateCell = document.createElement('td');
-			dateCell.textContent = date;
-
-			const [statusClass, statusLabel] = programStatusLabels[status];
-			const statusCell = document.createElement('td');
-			const statusLabelElement = document.createElement('span');
-			statusLabelElement.className = `status ${statusClass}`;
-			statusLabelElement.dataset.status = status;
-			statusLabelElement.textContent = statusLabel;
-			statusCell.append(statusLabelElement);
-
-			const actionsCell = document.createElement('td');
-			const actions = document.createElement('div');
-			actions.className = 'row-actions';
-			[['edit-program', 'fa-pen', `تعديل ${name}`], ['delete delete-program', 'fa-regular fa-trash-can', `حذف ${name}`]].forEach(([className, iconClass, label]) => {
-				const button = document.createElement('button');
-				const icon = document.createElement('i');
-				button.type = 'button';
-				button.className = `action-btn ${className}`;
-				button.setAttribute('aria-label', label);
-				icon.className = iconClass.startsWith('fa-regular') ? iconClass : `fa-solid ${iconClass}`;
-				button.append(icon);
-				actions.append(button);
-			});
-			actionsCell.append(actions);
-			row.append(programCell, audienceCell, dateCell, statusCell, actionsCell);
-			return row;
+		function validateHrefField(field, required) {
+			const value = field.value.trim();
+			const valid = (!required && !value) || MadarSiteContent.isSafeHref(value);
+			field.setCustomValidity(valid ? '' : 'استخدم رابطاً آمناً مثل #contact أو https://example.com.');
+			if (!valid) field.reportValidity();
+			return valid;
 		}
+
+		try {
+			siteContent = MadarSiteContent.load();
+		} catch (error) {
+			siteContent = MadarSiteContent.createDefaults();
+			reportError(error);
+		}
+		populateDashboard();
+
+		document.querySelectorAll('.metric-value[data-count-target]').forEach((element) => {
+			animateMetricCount(element, Number(element.dataset.countTarget), true);
+		});
+
+		document.getElementById('homeContentForm').addEventListener('submit', (event) => {
+			event.preventDefault();
+			const primaryHref = document.getElementById('primaryButtonHref');
+			const secondaryHref = document.getElementById('secondaryButtonHref');
+			if (!validateHrefField(primaryHref, true) || !validateHrefField(secondaryHref, true)) return;
+
+			const nextContent = cloneContent(siteContent);
+			nextContent.hero = {
+				title: document.getElementById('heroTitle').value.trim(),
+				highlight: document.getElementById('heroHighlight').value.trim(),
+				description: document.getElementById('heroDescription').value.trim(),
+				primaryButtonText: document.getElementById('primaryButtonText').value.trim(),
+				primaryButtonHref: primaryHref.value.trim(),
+				secondaryButtonText: document.getElementById('secondaryButtonText').value.trim(),
+				secondaryButtonHref: secondaryHref.value.trim()
+			};
+			nextContent.aboutDescription = document.getElementById('aboutDescription').value.trim();
+			commitContent(nextContent, 'تم حفظ محتوى الصفحة الرئيسية.');
+		});
 
 		searchInput.addEventListener('input', filterPrograms);
 
 		programForm.addEventListener('submit', (event) => {
 			event.preventDefault();
-			const editingIndex = document.getElementById('editingRow').value;
-			const name = document.getElementById('programName').value.trim();
-			const audience = document.getElementById('programAudience').value.trim();
-			const date = document.getElementById('programDate').value;
-			const status = document.getElementById('programStatus').value;
-			const description = document.getElementById('programDescription').value.trim();
-			const program = { name, description, audience, date, status };
+			const editingId = document.getElementById('editingRow').value;
+			const nextContent = cloneContent(siteContent);
+			const program = {
+				id: editingId || createId('program'),
+				name: document.getElementById('programName').value.trim(),
+				category: document.getElementById('programCategory').value.trim(),
+				audience: document.getElementById('programAudience').value.trim(),
+				date: document.getElementById('programDate').value,
+				status: document.getElementById('programStatus').value,
+				description: document.getElementById('programDescription').value.trim()
+			};
 
-			if (editingIndex !== '') {
-				programTableBody.rows[Number(editingIndex)].replaceWith(createProgramRow(program));
-				showToast('تم تحديث البرنامج بنجاح.');
+			if (editingId) {
+				nextContent.programs = nextContent.programs.map((item) => item.id === editingId ? program : item);
 			} else {
-				programTableBody.append(createProgramRow(program));
-				showToast('تمت إضافة البرنامج بنجاح.');
+				nextContent.programs.push(program);
 			}
-			resetProgramForm();
-			updateProgramCount();
-			filterPrograms();
-			bootstrap.Collapse.getOrCreateInstance(programFormPanel).hide();
+			if (commitContent(nextContent, editingId ? 'تم تحديث البرنامج بنجاح.' : 'تمت إضافة البرنامج بنجاح.')) {
+				resetProgramForm();
+				bootstrap.Collapse.getOrCreateInstance(programFormPanel).hide();
+			}
 		});
 
 		document.getElementById('cancelProgramEdit').addEventListener('click', resetProgramForm);
-
-		programTableBody.addEventListener('click', (event) => {
-			const button = event.target.closest('button');
+		document.getElementById('programTable').addEventListener('click', (event) => {
+			const button = event.target.closest('button[data-action]');
 			if (!button) return;
 			const row = button.closest('tr');
-			if (button.classList.contains('delete-program')) {
+			const program = siteContent.programs.find((item) => item.id === row.dataset.id);
+			if (!program) return;
+
+			if (button.dataset.action === 'delete-program') {
 				if (window.confirm('هل تريد حذف هذا البرنامج؟')) {
-					row.remove();
-					updateProgramCount();
-					filterPrograms();
-					showToast('تم حذف البرنامج.');
+					const nextContent = cloneContent(siteContent);
+					nextContent.programs = nextContent.programs.filter((item) => item.id !== program.id);
+					commitContent(nextContent, 'تم حذف البرنامج.');
 				}
 				return;
 			}
-			if (button.classList.contains('edit-program')) {
-				document.getElementById('editingRow').value = String([...programTableBody.rows].indexOf(row));
-				document.getElementById('programName').value = row.querySelector('.program-name').textContent;
-				document.getElementById('programAudience').value = row.cells[1].textContent;
-				document.getElementById('programDate').value = row.cells[2].textContent;
-				document.getElementById('programStatus').value = row.querySelector('[data-status]').dataset.status;
-				document.getElementById('programDescription').value = row.querySelector('.program-sub').textContent;
-				document.getElementById('programFormTitle').textContent = 'تعديل البرنامج التدريبي';
-				bootstrap.Collapse.getOrCreateInstance(programFormPanel).show();
-				document.getElementById('programName').focus();
+
+			document.getElementById('editingRow').value = program.id;
+			document.getElementById('programName').value = program.name;
+			document.getElementById('programCategory').value = program.category;
+			document.getElementById('programAudience').value = program.audience;
+			document.getElementById('programDate').value = program.date;
+			document.getElementById('programStatus').value = program.status;
+			document.getElementById('programDescription').value = program.description;
+			document.getElementById('programFormTitle').textContent = 'تعديل البرنامج التدريبي';
+			bootstrap.Collapse.getOrCreateInstance(programFormPanel).show();
+			document.getElementById('programName').focus();
+		});
+
+		function clearServiceFormState() {
+			document.getElementById('editingServiceId').value = '';
+			document.getElementById('serviceFormTitle').textContent = 'إضافة خدمة';
+		}
+
+		function resetServiceForm() {
+			document.getElementById('serviceForm').reset();
+			clearServiceFormState();
+		}
+
+		document.getElementById('newServiceButton').addEventListener('click', () => {
+			resetServiceForm();
+			bootstrap.Collapse.getOrCreateInstance(serviceFormPanel).show();
+			document.getElementById('serviceTitle').focus();
+		});
+		document.getElementById('closeServiceForm').addEventListener('click', () => {
+			bootstrap.Collapse.getOrCreateInstance(serviceFormPanel).hide();
+		});
+		document.getElementById('serviceForm').addEventListener('reset', () => {
+			window.setTimeout(clearServiceFormState, 0);
+		});
+		document.getElementById('serviceForm').addEventListener('submit', (event) => {
+			event.preventDefault();
+			const editingId = document.getElementById('editingServiceId').value;
+			const nextContent = cloneContent(siteContent);
+			const service = {
+				id: editingId || createId('service'),
+				title: document.getElementById('serviceTitle').value.trim(),
+				description: document.getElementById('serviceDescription').value.trim(),
+				icon: document.getElementById('serviceIcon').value
+			};
+			if (editingId) {
+				nextContent.services = nextContent.services.map((item) => item.id === editingId ? service : item);
+			} else {
+				nextContent.services.push(service);
 			}
+			if (commitContent(nextContent, editingId ? 'تم تحديث الخدمة.' : 'تمت إضافة الخدمة.')) {
+				resetServiceForm();
+				bootstrap.Collapse.getOrCreateInstance(serviceFormPanel).hide();
+			}
+		});
+		document.getElementById('serviceList').addEventListener('click', (event) => {
+			const button = event.target.closest('button[data-action]');
+			if (!button) return;
+			const row = button.closest('.service-row');
+			const service = siteContent.services.find((item) => item.id === row.dataset.id);
+			if (!service) return;
+
+			if (button.dataset.action === 'delete-service') {
+				if (window.confirm('هل تريد حذف هذه الخدمة؟')) {
+					const nextContent = cloneContent(siteContent);
+					nextContent.services = nextContent.services.filter((item) => item.id !== service.id);
+					commitContent(nextContent, 'تم حذف الخدمة.');
+				}
+				return;
+			}
+
+			document.getElementById('editingServiceId').value = service.id;
+			document.getElementById('serviceTitle').value = service.title;
+			document.getElementById('serviceDescription').value = service.description;
+			document.getElementById('serviceIcon').value = service.icon;
+			document.getElementById('serviceFormTitle').textContent = 'تعديل الخدمة';
+			bootstrap.Collapse.getOrCreateInstance(serviceFormPanel).show();
+			document.getElementById('serviceTitle').focus();
+		});
+
+		function clearCustomSectionFormState() {
+			document.getElementById('editingCustomSectionId').value = '';
+			document.getElementById('customSectionFormTitle').textContent = 'إضافة قسم';
+		}
+
+		function resetCustomSectionForm() {
+			document.getElementById('customSectionForm').reset();
+			clearCustomSectionFormState();
+		}
+
+		document.getElementById('newSectionButton').addEventListener('click', () => {
+			resetCustomSectionForm();
+			bootstrap.Collapse.getOrCreateInstance(customSectionFormPanel).show();
+			document.getElementById('customSectionTitle').focus();
+		});
+		document.getElementById('closeCustomSectionForm').addEventListener('click', () => {
+			bootstrap.Collapse.getOrCreateInstance(customSectionFormPanel).hide();
+		});
+		document.getElementById('customSectionForm').addEventListener('reset', () => {
+			window.setTimeout(clearCustomSectionFormState, 0);
+		});
+		document.getElementById('customSectionForm').addEventListener('submit', (event) => {
+			event.preventDefault();
+			const buttonText = document.getElementById('customSectionButtonText').value.trim();
+			const buttonHref = document.getElementById('customSectionButtonHref');
+			if (Boolean(buttonText) !== Boolean(buttonHref.value.trim())) {
+				showToast('أدخل نص الزر والرابط معاً، أو اترك الحقلين فارغين.');
+				return;
+			}
+			if (!validateHrefField(buttonHref, false)) return;
+
+			const editingId = document.getElementById('editingCustomSectionId').value;
+			const nextContent = cloneContent(siteContent);
+			const section = {
+				id: editingId || createId('section'),
+				title: document.getElementById('customSectionTitle').value.trim(),
+				description: document.getElementById('customSectionDescription').value.trim(),
+				buttonText,
+				buttonHref: buttonHref.value.trim(),
+				visible: document.getElementById('customSectionVisible').checked
+			};
+			if (editingId) {
+				nextContent.customSections = nextContent.customSections.map((item) => item.id === editingId ? section : item);
+			} else {
+				nextContent.customSections.push(section);
+			}
+			if (commitContent(nextContent, editingId ? 'تم تحديث القسم.' : 'تمت إضافة القسم.')) {
+				resetCustomSectionForm();
+				bootstrap.Collapse.getOrCreateInstance(customSectionFormPanel).hide();
+			}
+		});
+		document.getElementById('customSectionList').addEventListener('click', (event) => {
+			const button = event.target.closest('button[data-action]');
+			if (!button) return;
+			const row = button.closest('.content-row');
+			const section = siteContent.customSections.find((item) => item.id === row.dataset.id);
+			if (!section) return;
+
+			if (button.dataset.action === 'delete-section') {
+				if (window.confirm('هل تريد حذف هذا القسم؟')) {
+					const nextContent = cloneContent(siteContent);
+					nextContent.customSections = nextContent.customSections.filter((item) => item.id !== section.id);
+					commitContent(nextContent, 'تم حذف القسم.');
+				}
+				return;
+			}
+
+			document.getElementById('editingCustomSectionId').value = section.id;
+			document.getElementById('customSectionTitle').value = section.title;
+			document.getElementById('customSectionDescription').value = section.description;
+			document.getElementById('customSectionButtonText').value = section.buttonText;
+			document.getElementById('customSectionButtonHref').value = section.buttonHref;
+			document.getElementById('customSectionVisible').checked = section.visible;
+			document.getElementById('customSectionFormTitle').textContent = 'تعديل القسم';
+			bootstrap.Collapse.getOrCreateInstance(customSectionFormPanel).show();
+			document.getElementById('customSectionTitle').focus();
+		});
+		document.getElementById('customSectionList').addEventListener('change', (event) => {
+			const checkbox = event.target.closest('input[data-action="toggle-section"]');
+			if (!checkbox) return;
+			const row = checkbox.closest('.content-row');
+			const nextContent = cloneContent(siteContent);
+			const section = nextContent.customSections.find((item) => item.id === row.dataset.id);
+			if (!section) return;
+			section.visible = checkbox.checked;
+			commitContent(nextContent, section.visible ? 'تم إظهار القسم.' : 'تم إخفاء القسم.');
 		});
 
 		document.getElementById('settingsForm').addEventListener('submit', (event) => {
 			event.preventDefault();
-			showToast('تم حفظ إعدادات الموقع.');
+			const nextContent = cloneContent(siteContent);
+			nextContent.settings = {
+				email: document.getElementById('siteEmail').value.trim(),
+				phone: document.getElementById('sitePhone').value.trim(),
+				address: document.getElementById('siteAddress').value.trim(),
+				acceptApplications: document.getElementById('acceptApplications').checked,
+				showUpcoming: document.getElementById('showUpcoming').checked
+			};
+			commitContent(nextContent, 'تم حفظ إعدادات الموقع.');
+		});
+
+		document.getElementById('resetSiteContent').addEventListener('click', () => {
+			if (!window.confirm('سيتم حذف جميع التعديلات وإرجاع محتوى الموقع إلى الإعدادات الافتراضية. هل تريد المتابعة؟')) return;
+			try {
+				siteContent = MadarSiteContent.reset();
+				populateDashboard();
+				showToast('تمت إعادة محتوى الموقع إلى الإعدادات الافتراضية.');
+			} catch (error) {
+				reportError(error);
+			}
+		});
+
+		window.addEventListener('storage', (event) => {
+			if (event.key !== MadarSiteContent.key && event.key !== null) return;
+			try {
+				siteContent = MadarSiteContent.load();
+				populateDashboard();
+				showToast('تم تحديث محتوى الموقع من تبويب آخر.');
+			} catch (error) {
+				reportError(error);
+			}
 		});
 
 		document.querySelectorAll('.side-link[href^="#"]').forEach((link) => {
